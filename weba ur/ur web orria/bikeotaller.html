@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bikeo Taller | Tarifas y Servicios de Reparación en Azpeitia</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            background-color: #fcfcfc;
+        }
+        
+        header {
+            background-color: #111;
+            color: #fff;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: calc(100% - 80px);
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .logo {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #fff;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #ffcc00;
+        }
+        
+        .menu-derecha {
+            display: flex;
+            align-items: center;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: #ffcc00;
+        }
+        
+        .idiomas {
+            border-left: 1px solid #444;
+            padding-left: 20px;
+            margin-left: 20px;
+            font-size: 0.9em;
+        }
+        .idiomas button {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 1em;
+            font-family: inherit;
+            margin: 0 3px;
+            padding: 0;
+            transition: color 0.2s;
+        }
+        .idiomas button:hover, .idiomas button.activo {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        /* Sección Hero */
+        .hero {
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?q=80&w=1200&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            padding: 160px 20px 100px 20px;
+            color: #fff;
+            border-bottom: 5px solid #ffcc00;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            z-index: 2;
+        }
+        .hero h2 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+        .hero p {
+            font-size: 1.25em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            max-width: 700px;
+            margin: 0 auto 20px auto;
+        }
+        .btn-cita {
+            display: inline-block;
+            background-color: #ffcc00;
+            color: #111;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: background 0.3s, transform 0.2s;
+        }
+        .btn-cita:hover {
+            background-color: #e6b800;
+            transform: scale(1.03);
+        }
+
+        /* DISEÑO DEL CARRUSEL */
+        .carrusel-contenedor {
+            max-width: 960px;
+            margin: 50px auto 10px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .carrusel-diapositivas {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 300%;
+        }
+        .carrusel-item {
+            width: 100.333%;
+            position: relative;
+        }
+        .carrusel-item img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+        }
+        .carrusel-pie {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 1.05em;
+            text-align: center;
+        }
+        .carrusel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 15px 18px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border-radius: 50%;
+            margin: 0 10px;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+        .carrusel-control:hover {
+            background: #ffcc00;
+            color: #111;
+        }
+        .carrusel-control.prev { left: 0; }
+        .carrusel-control.next { right: 0; }
+
+        /* Contenedor Común */
+        .container {
+            max-width: 960px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        .seccion-titulo {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            position: relative;
+            color: #111;
+        }
+        .seccion-titulo::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #ffcc00;
+            margin: 10px auto 0;
+        }
+        .seccion-subtitulo {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        /* SECCIÓN REVISIONES (TABLA COMPLETA) */
+        .tabla-contenedor {
+            overflow-x: auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #111;
+            color: #fff;
+            font-weight: 600;
+        }
+        th.pack-header {
+            text-align: center;
+            font-size: 1.1em;
+        }
+        th.pack-header span {
+            display: block;
+            color: #ffcc00;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        tr:hover td {
+            background-color: #f9f9f9;
+        }
+        td.check {
+            text-align: center;
+            color: #e6b800;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        td.no-check {
+            text-align: center;
+            color: #ccc;
+        }
+
+        /* SECCIÓN OTROS SERVICIOS POR CATEGORÍAS */
+        .grid-tarifas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .bloque-tarifa {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .bloque-tarifa h3 {
+            margin-top: 0;
+            color: #111;
+            font-size: 1.3em;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .item-precio {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #efeef0;
+            font-size: 1.05em;
+        }
+        .item-precio:last-child {
+            border-bottom: none;
+        }
+        .item-precio .precio-num {
+            font-weight: bold;
+            color: #111;
+            white-space: nowrap;
+        }
+
+        /* Avisos e Información Importante */
+        .panel-avisos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .tarjeta-aviso {
+            background-color: #fffde6;
+            border-left: 5px solid #ffcc00;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        .tarjeta-aviso h4 {
+            margin: 0 0 8px 0;
+            color: #111;
+            font-size: 1.1em;
+        }
+        .tarjeta-aviso p {
+            margin: 0;
+            font-size: 0.95em;
+            color: #444;
+        }
+
+        /* SECCIÓN CONTACTO */
+        .contacto-info {
+            background-color: #111;
+            color: #fff;
+            padding: 60px 20px;
+        }
+        .contacto-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 960px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        .contacto-datos {
+            flex: 1;
+            min-width: 300px;
+        }
+        .contacto-datos p {
+            font-size: 1.15em;
+            margin: 15px 0;
+        }
+        .contacto-datos a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contacto-datos a:hover {
+            text-decoration: underline;
+        }
+        .contacto-mapa {
+            flex: 1;
+            min-width: 300px;
+            height: 350px;
+        }
+        .contacto-mapa iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        footer {
+            background-color: #0a0a0a;
+            color: #777;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+                width: calc(100% - 30px);
+            }
+            .menu-derecha {
+                flex-direction: column;
+                margin-top: 12px;
+            }
+            .idiomas {
+                border-left: none;
+                padding-left: 0;
+                margin-left: 0;
+                border-top: 1px solid #343434;
+                padding-top: 8px;
+                margin-top: 8px;
+            }
+            .hero {
+                padding: 150px 20px 60px 20px;
+            }
+            .hero h2 {
+                font-size: 2em;
+            }
+            .carrusel-item img {
+                height: 280px;
+            }
+            .grid-tarifas {
+                grid-template-columns: 1fr;
+            }
+            .contacto-grid {
+                flex-direction: column-reverse;
+            }
+            .contacto-datos, .contacto-mapa {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <p class="logo">BIKEO <span>TALLER</span></p>
+        <div class="menu-derecha">
+            <nav>
+                <a href="#inicio" id="nav-inicio">Inicio</a>
+                <a href="#tarifas" id="nav-tarifas">Tarifas</a>
+                <a href="#contacto" id="nav-contacto">Contacto</a>
+            </nav>
+            <div class="idiomas">
+                <button onclick="cambiarIdioma('es')" id="btn-es" class="activo">ES</button> | 
+                <button onclick="cambiarIdioma('eu')" id="btn-eu">EU</button> | 
+                <button onclick="cambiarIdioma('en')" id="btn-en">EN</button>
+            </div>
+        </div>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h2 id="txt-hero-titulo">Taller de bicicletas y patinetes en Azpeitia</h2>
+            <p id="txt-hero-p">Reparación, mantenimiento y puestas a punto profesionales con tarifas transparentes y sin sorpresas. ¡Mantenemos tu vehicle siempre a punto!</p>
+            <a href="https://wa.me/34747476564" class="btn-cita" id="txt-btn-cita" target="_blank">Pedir Cita por WhatsApp</a>
+        </div>
+    </section>
+
+    <div class="carrusel-contenedor">
+        <button class="carrusel-control prev" onclick="moverCarrusel(-1)">❮</button>
+        <button class="carrusel-control next" onclick="moverCarrusel(1)">❯</button>
+        
+        <div class="carrusel-diapositivas" id="carruselSlide">
+            <div class="carrusel-item">
+                <img src="1.jpeg" alt="Instalaciones de Bikeo Taller">
+                <div class="carrusel-pie" id="cr-p1">Nuestro espacio de trabajo en Azpeitia</div>
+            </div>
+            <div class="carrusel-item">
+                <img src="2.png" alt="Herramientas profesionales de mecánica">
+                <div class="carrusel-pie" id="cr-p2">Herramientas especializadas para el cuidado de tu bicicleta</div>
+            </div>
+            <div class="carrusel-item">
+                <img src="3.PNG" alt="Detalle de reparación">
+                <div class="carrusel-pie" id="cr-p3">Mecánica de precisión en todo tipo de componentes</div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container" id="tarifas">
+        <h2 class="seccion-titulo" id="tit-revisiones">Nuestras Revisiones</h2>
+        <p class="seccion-subtitulo" id="sub-revisiones">Elige el nivel de mantenimiento que mejor se adapte a las necesidades de tu bicicleta</p>
+        
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40%;" id="th-trabajos">Puntos de Revisión</th>
+                        <th class="pack-header" style="width: 20%;">Essential <span>25€</span></th>
+                        <th class="pack-header" style="width: 20%;">Pro <span>45€</span></th>
+                        <th class="pack-header" style="width: 20%;">Elite <span>65€</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="rev-1">Ajuste de cambio</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td id="rev-2">Ajuste de freno</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td id="rev-3">Revisión general de tornillería</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td id="rev-4">Presión de neumáticos</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td id="rev-5">Revisión del estado</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td id="rev-6">Centrado de ruedas</td>
+                        <td class="no-check">—</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td id="rev-7">Revisión de dirección</td>
+                        <td class="no-check">—</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td id="rev-8">Lavado completo</td>
+                        <td class="no-check">—</td>
+                        <td class="no-check">—</td>
+                        <td class="check">✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="seccion-titulo" style="margin-top: 70px;" id="tit-otros">Trabajos y Tarifas a la Carta</h2>
+        <p class="seccion-subtitulo" id="sub-otros">Precios de reparaciones específicas por componentes</p>
+
+        <div class="grid-tarifas">
+            <div class="bloque-tarifa">
+                <h3 id="cat-trans">Servicios de Transmisión</h3>
+                <div class="item-precio"><span id="t1">Montaje de cadena y ajuste de cambio</span><span class="precio-num">16 €</span></div>
+                <div class="item-precio"><span id="t2">Montaje de funda y cable de cambio + ajuste</span><span class="precio-num">20 €</span></div>
+                <div class="item-precio"><span id="t3">Montaje de pulsadores</span><span class="precio-num">20 €</span></div>
+                <div class="item-precio"><span id="t4">Sustitución de eje pedalier</span><span class="precio-num">15 €</span></div>
+                <div class="item-precio"><span id="t5">Engrase de eje pedalier</span><span class="precio-num">18 €</span></div>
+                <div class="item-precio"><span id="t6">Sustitución de cassette</span><span class="precio-num">10 €</span></div>
+                <div class="item-precio"><span id="t7">Sustitución de plato</span><span class="precio-num">10 €</span></div>
+                <div class="item-precio"><span id="t8">Sustitución de biela izquierda</span><span class="precio-num">8 €</span></div>
+                <div class="item-precio"><span id="t9">Sustitución de bielas</span><span class="precio-num">10 €</span></div>
+                <div class="item-precio"><span id="t10">Sustitución de roldanas de cambio</span><span class="precio-num">15 €</span></div>
+            </div>
+
+            <div class="bloque-tarifa">
+                <h3 id="cat-fren">Servicios de Frenado</h3>
+                <div class="item-precio"><span id="f1">Ajuste de freno delantero o trasero</span><span class="precio-num">10 €</span></div>
+                <div class="item-precio"><span id="f2">Ajuste de frenos (ambos)</span><span class="precio-num">20 €</span></div>
+                <div class="item-precio"><span id="f3">Purgado de frenos</span><span class="precio-num">20 €</span></div>
+                <div class="item-precio"><span id="f4">Purgado y montaje de pastillas</span><span class="precio-num">25 €</span></div>
+                <div class="item-precio"><span id="f5">Montaje de cable y funda de freno + ajuste</span><span class="precio-num">20 €</span></div>
+                <div class="item-precio"><span id="f6">Sustitución de pastillas</span><span class="precio-num">18 €</span></div>
+                <div class="item-precio"><span id="f7">Sustitución de puente de freno</span><span class="precio-num">15 €</span></div>
+                <div class="item-precio"><span id="f8">Sustitución de maneta de freno</span><span class="precio-num">15 €</span></div>
+                <div class="item-precio"><span id="f9">Sustitución de disco de freno</span><span class="precio-num">10 €</span></div>
+                <div class="item-precio"><span id="f10">Sustitución de zapatas de freno (2 juegos)</span><span class="precio-num">16 €</span></div>
+            </div>
+
+            <div class="bloque-tarifa">
+                <h3 id="cat-rued">Servicios de Rueda</h3>
+                <div class="item-precio"><span id="r1">Sustitución de cubierta</span><span class="precio-num">9 €</span></div>
+                <div class="item-precio"><span id="r2">Sustitución de cámara</span><span class="precio-num">8 €</span></div>
+                <div class="item-precio"><span id="r3">Centrado de rueda</span><span class="precio-num">12 €</span></div>
+                <div class="item-precio"><span id="r4">Radiado de rueda completa</span><span class="precio-num">100 €</span></div>
+                <div class="item-precio"><span id="r5">Ajuste de conos</span><span class="precio-num">12 €</span></div>
+                <div class="item-precio"><span id="r6">Engrase de núcleo</span><span class="precio-num">15 €</span></div>
+                <div class="item-precio"><span id="r7">Sustitución de rodamientos</span><span class="precio-num">20 €</span></div>
+                <div class="item-precio"><span id="r8">Montaje de tubular</span><span class="precio-num">18 €</span></div>
+                <div class="item-precio"><span id="r9">Tubelizar rueda</span><span class="precio-num">15 €</span></div>
+                <div class="item-precio"><span id="r10">Sustitución de rueda + disco</span><span class="precio-num">20 €</span></div>
+                <div class="item-precio"><span id="r11">Lavado de bici</span><span class="precio-num">20 €</span></div>
+            </div>
+
+            <div class="bloque-tarifa">
+                <h3 id="cat-cuad">Servicios de Cuadro y Dirección</h3>
+                <div class="item-precio"><span id="c1">Sustitución de cuadro</span><span class="precio-num">490 €</span></div>
+                <div class="item-precio"><span id="c2">Montaje de bicicleta estándar (no e-bike)</span><span class="precio-num">70 €</span></div>
+                <div class="item-precio"><span id="c3">Sustitución de basculante</span><span class="precio-num">60 €</span></div>
+                <div class="item-precio"><span id="c4">Sustitución de amortiguador</span><span class="precio-num">18 €</span></div>
+                <div class="item-precio"><span id="c5">Sustitución de horquilla</span><span class="precio-num">28 €</span></div>
+                <div class="item-precio"><span id="c6">Enderezar puntera / Sustitución</span><span class="precio-num">16 €</span></div>
+                <div class="item-precio"><span id="c7">Ajuste / Sustitución de dirección</span><span class="precio-num">10 € / 15 €</span></div>
+                <div class="item-precio"><span id="c8">Engrase de dirección</span><span class="precio-num">18 €</span></div>
+                <div class="item-precio"><span id="c9">Sustitución de manillar / potencia</span><span class="precio-num">12 € / 10 €</span></div>
+                <div class="item-precio"><span id="c10">Sustitución de tija estándar / telescópica</span><span class="precio-num">10 € / 50 €</span></div>
+                
+                <h3 style="margin-top: 25px;" id="cat-pat">Patinetes Eléctricos</h3>
+                <div class="item-precio"><span id="p1">Zulaketa / Confección de presupuestos</span><span class="precio-num">30 €</span></div>
+            </div>
+        </div>
+
+        <div class="panel-avisos">
+            <div class="tarjeta-aviso">
+                <h4 id="av-t1">Mano de Obra</h4>
+                <p id="av-p1">La primera hora de mano de obra para otros trabajos fuera de lista es de 40 €/hora.</p>
+            </div>
+            <div class="tarjeta-aviso">
+                <h4 id="av-t2">Recogida de Vehículos</h4>
+                <p id="av-p2">Las bicicletas deben recogerse dentro de las 48 horas posteriores al aviso. Pasado ese tiempo, se cobrará un suplemento de 1€ por cada día laborable adicional.</p>
+            </div>
+            <div class="tarjeta-aviso">
+                <h4 id="av-t3">Impuestos</h4>
+                <p id="av-p3">Todos los precios indicados en las listas de tarifas no incluyen el IVA.</p>
+            </div>
+        </div>
+    </main>
+
+    <section id="contacto" class="contacto-info">
+        <h2 class="seccion-titulo" style="color: #fff; margin-bottom: 40px;" id="nav-contacto-tit">¿Dónde estamos?</h2>
+        <div class="contacto-grid">
+            <div class="contacto-datos">
+                <p><strong id="lbl-dir">Dirección:</strong> <span>Calle José Antonio Agirre Plaza 5, 20730 Azpeitia, Gipuzkoa</span></p>
+                <p><strong id="lbl-tel">Teléfono / WhatsApp:</strong> <a href="tel:+34747476564">+34 747 47 65 64</a></p>
+                <p><strong>Email:</strong> <a href="mailto:bikeotaller@gmail.com">bikeotaller@gmail.com</a></p>
+                <p><strong id="lbl-hor">Horario:</strong> <span id="txt-hor">Lunes a Viernes: 15:30 – 19:30 (Sábado y Domingo cerrado)</span></p>
+            </div>
+            <div class="contacto-mapa">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2911.3916960868153!2d-2.2687588!3d43.1803277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd502662923f6681%3A0xc3b8a36ef009dcb!2sJose%20Antonio%20Agirre%20Plaza%2C%205%2C%2020730%20Azpeitia%2C%20Gipuzkoa!5e0!3m2!1ses!2ses!4v1716710000000!5m2!1ses!2ses" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Bikeo Taller. <span id="txt-footer">Todos los derechos reservados.</span></p>
+    </footer>
+
+    <script>
+        const traducciones = {
+            es: {
+                inicio: "Inicio", tarifas: "Tarifas", contacto: "Contacto",
+                heroT: "Taller de bicicletas y patinetes en Azpeitia",
+                heroP: "Reparación, mantenimiento y puestas a punto profesionales con tarifas transparentes y sin sorpresas. ¡Mantenemos tu vehículo siempre a punto!",
+                btnC: "Pedir Cita por WhatsApp",
+                titRev: "Nuestras Revisiones", subRev: "Elige el nivel de mantenimiento que mejor se adapte a las necesidades de tu bicicleta",
+                thTrabajos: "Puntos de Revisión", titOtros: "Trabajos y Tarifas a la Carta", subOtros: "Precios de reparaciones específicas por componentes",
+                catTrans: "Servicios de Transmisión", catFren: "Servicios de Frenado", catRued: "Servicios de Rueda", catCuad: "Servicios de Cuadro y Dirección", catPat: "Patinetes Eléctricos",
+                navContactoTit: "¿Dónde estamos?",
+                
+                crP1: "Nuestro espacio de trabajo en Azpeitia",
+                crP2: "Herramientas especializadas para el cuidado de tu bicicleta",
+                crP3: "Mecánica de precisión en todo tipo de componentes",
+
+                rev1: "Ajuste de cambio", rev2: "Ajuste de freno", rev3: "Revisión general de tornillería", rev4: "Presión de neumáticos", rev5: "Revisión del estado", rev6: "Centrado de ruedas", rev7: "Revisión de dirección", rev8: "Lavado completo",
+                
+                t1: "Montaje de cadena y ajuste de cambio", t2: "Montaje de funda y cable de cambio + ajuste", t3: "Montaje de pulsadores", t4: "Sustitución de eje pedalier", t5: "Engrase de eje pedalier", t6: "Sustitución de cassette", t7: "Sustitución de plato", t8: "Sustitución de biela izquierda", t9: "Sustitución de bielas", t10: "Sustitución de roldanas de cambio",
+                
+                f1: "Ajuste de freno delantero o trasero", f2: "Ajuste de frenos (ambos)", f3: "Purgado de frenos", f4: "Purgado y montaje de pastillas", f5: "Montaje de cable y funda de freno + ajuste", f6: "Sustitución de pastillas", f7: "Sustitución de puente de freno", f8: "Sustitución de maneta de freno", f9: "Sustitución de disco de freno", f10: "Sustitución de zapatas de freno (2 juegos)",
+                
+                r1: "Sustitución de cubierta", r2: "Sustitución de cámara", r3: "Centrado de rueda", r4: "Radiado de rueda completa", r5: "Ajuste de conos", r6: "Engrase de núcleo", r7: "Sustitución de rodamientos", r8: "Montaje de tubular", r9: "Tubelizar rueda", r10: "Sustitución de rueda + disco", r11: "Lavado de bici",
+                
+                c1: "Sustitución de cuadro", c2: "Montaje de bicicleta estándar (no e-bike)", c3: "Sustitución de basculante", c4: "Sustitución de amortiguador", c5: "Sustitución de horquilla", c6: "Enderezar puntera / Sustitución", c7: "Ajuste / Sustitución de dirección", c8: "Engrase de dirección", c9: "Sustitución de manillar / potencia", c10: "Sustitución de tija estándar / telescópica", p1: "Zulaketa / Confección de presupuestos",
+                
+                avT1: "Mano de Obra", avP1: "La primera hora de mano de obra para otros trabajos fuera de lista es de 40 €/hora.",
+                avT2: "Recogida de Vehículos", avP2: "Las bicicletas deben recogerse dentro de las 48 horas posteriores al aviso. Pasado ese tiempo, se cobrará un suplemento de 1€ por cada día laborable adicional.",
+                avT3: "Impuestos", avP3: "Todos los precios indicados en las listas de tarifas no incluyen el IVA.",
+                lblDir: "Dirección:", lblTel: "Teléfono / WhatsApp:", lblHor: "Horario:",
+                txtHor: "Lunes a Viernes: 15:30 – 19:30 (Sábado y Domingo cerrado)", footer: "Todos los derechos reservados."
+            },
+            eu: {
+                inicio: "Hasiera", tarifas: "Tarifak", contacto: "Kontaktua",
+                heroT: "Bizikleta eta patinete tailerra Azpeitian",
+                heroP: "Konponketa, mantentze-lan eta doikuntza profesionalak tarifa gardenekin eta ezustekorik gabe. Zure ibilgailua beti prest!",
+                btnC: "Eskatu Hitzordua WhatsApp bidez",
+                titRev: "Gure Berrikuspenak", subRev: "Aukeratu zure bizikletaren beharretara hobekien egokitzen den mantentze-maila",
+                thTrabajos: "Berrikuspen Puntuak", titOtros: "Lan eta Tarifak Neurrira", subOtros: "Osagai bakoitzaren konponketa espezifikoen prezioak",
+                catTrans: "Transmisio Zerbitzuak", catFren: "Balazta Zerbitzuak", catRued: "Gurpil Zerbitzuak", catCuad: "Koadro eta Gidatze Zerbitzuak", catPat: "Patinete Elektrikoak",
+                navContactoTit: "Non gaude?",
+                
+                crP1: "Gure lan-eremua Azpeitian",
+                crP2: "Zure bizikleta zaintzeko tresna espezializatuak",
+                crP3: "Doitasunezko mekanika osagai mota guztietan",
+
+                rev1: "Aldagailuaren doikuntza", rev2: "Balaztaren doikuntza", rev3: "Torlojuen berrikuspen orokorra", rev4: "Gurpilen aire-presioa", rev5: "Egoeraren berrikuspen orokorra", rev6: "Gurpilak zentratzea", rev7: "Gidaren berrikuspena", rev8: "Garbiketa osoa",
+                
+                t1: "Katea jartzea eta aldagailua doitzea", t2: "Aldagailuaren kablea eta zorroa jartzea + doitzea", t3: "Pulsadoreak jartzea", t4: "Pedalier ardatza aldatzea", t5: "Pedalier ardatza koipeztatzea", t6: "Kasetea aldatzea", t7: "Platera aldatzea", t8: "Ezkerreko biela aldatzea", t9: "Bielak aldatzea", t10: "Aldagailuko roldanak aldatzea",
+                
+                f1: "Aurreko edo atzeko balazta doitzea", f2: "Balaztak doitzea (biak)", f3: "Balaztak odoltzea / purgatzea", f4: "Balaztak odoltzea eta pastillak jartzea", f5: "Balaztaren kablea eta zorroa jartzea + doitzea", f6: "Pastillak aldatzea", f7: "Balazta-zubia aldatzea", f8: "Balazta-maneta aldatzea", f9: "Balazta-diskoa aldatzea", f10: "Balazta-zapatak aldatzea (2 joko)",
+                
+                r1: "Estalkia / Cubierta aldatzea", r2: "Kamara aldatzea", r3: "Gurpila zentratzea", r4: "Gurpil osoa radiatzea", r5: "Konoak doitzea", r6: "Nukleoa koipeztatzea", r7: "Errodamenduak aldatzea", r8: "Tubularra jartzea", r9: "Gurpila tubelizatzea", r10: "Gurpila + diskoa aldatzea", r11: "Bizikleta garbitzea",
+                
+                c1: "Koadroa aldatzea", c2: "Bizikleta estandarra muntatzea (ez e-bike)", c3: "Baskulantea aldatzea", c4: "Amortiguadorea aldatzea", c5: "Urkila / Horquilla aldatzea", c6: "Puntera zuzentzea / aldatzea", c7: "Gidaren doikuntza / aldaketa", c8: "Gida koipeztatzea", c9: "Manilarra / potentzia aldatzea", c10: "Tija estandarra / teleskopikoa aldatzea", p1: "Zulaketa / Aurrekontuak egitea",
+                
+                avT1: "Eskulana", avP1: "Zerrendatik kanpoko beste lan batzuetarako eskulandegiko lehen ordua 40 €/orduko da.",
+                avT2: "Ibilgailuak Jasotzea", avP2: "Bizikletas abisua eman eta hurrengo 48 orduen barruan jaso behar dira. Denbora hori igarotakoan, 1€-ko gehigarria kobratuko da lanegun bakoitzeko.",
+                avT3: "Zergak", avP3: "Tarifa-zerrendetan adierazitako prezio guztiek ez dute BEZik barne.",
+                lblDir: "Helbidea:", lblTel: "Telefonoa / WhatsApp:", lblHor: "Ordutegia:",
+                txtHor: "Astelehenetik Ostiralera: 15:30 – 19:30 (Larunbat eta Igandeetan itxita)", footer: "Eskubide guztiak erreserbatuta."
+            },
+            en: {
+                inicio: "Home", tarifas: "Rates", contacto: "Contact",
+                heroT: "Bicycle and Scooter Workshop in Azpeitia",
+                heroP: "Professional repair, maintenance, and tune-ups with transparent pricing and no surprises. We keep your vehicle always ready to ride!",
+                btnC: "Book an Appointment via WhatsApp",
+                titRev: "Our Tune-ups", subRev: "Choose the maintenance level that best suits your bicycle needs",
+                thTrabajos: "Inspection Points", titOtros: "A La Carte Services & Prices", subOtros: "Specific repair costs per component group",
+                catTrans: "Drivetrain Services", catFren: "Brake Services", catRued: "Wheel Services", catCuad: "Frame & Steering Services", catPat: "Electric Scooters",
+                navContactoTit: "Where are we?",
+                
+                crP1: "Our workspace in Azpeitia",
+                crP2: "Specialized tools for your bicycle's care",
+                crP3: "Precision mechanics on all types of components",
+
+                rev1: "Gear adjustment", rev2: "Brake adjustment", rev3: "General bolt check", rev4: "Tire pressure check", rev5: "Condition inspection", rev6: "Wheel truing", rev7: "Headset check", rev8: "Full wash",
+                
+                t1: "Chain installation and gear adjustment", t2: "Gear cable and housing replacement + adjustment", t3: "Shifter replacement", t4: "Bottom bracket replacement", t5: "Bottom bracket greasing", t6: "Cassette replacement", t7: "Chainring replacement", t8: "Left crank arm replacement", t9: "Crankset replacement", t10: "Derailleur pulley wheels replacement",
+                
+                f1: "Front or rear brake adjustment", f2: "Brake adjustment (both)", f3: "Brake bleeding", f4: "Brake bleeding and brake pads installation", f5: "Brake cable and housing replacement + adjustment", f6: "Brake pads replacement", f7: "Brake caliper replacement", f8: "Brake lever replacement", f9: "Brake rotor replacement", f10: "Brake shoes replacement (2 pairs)",
+                
+                r1: "Tire replacement", r2: "Inner tube replacement", r3: "Wheel truing", r4: "Complete wheel rebuilding/spoking", r5: "Hub cone adjustment", r6: "Freehub greasing", r7: "Bearings replacement", r8: "Tubular tire installation", r9: "Wheel tubeless conversion", r10: "Wheel + rotor replacement", r11: "Bike wash",
+                
+                c1: "Frame replacement", c2: "Standard bicycle assembly (non e-bike)", c3: "Swingarm replacement", c4: "Shock absorber replacement", c5: "Fork replacement", c6: "Derailleur hanger alignment / replacement", c7: "Headset adjustment / replacement", c8: "Headset greasing", c9: "Handlebar / stem replacement", c10: "Standard / dropper seatpost replacement", p1: "Puncture / Budget preparation",
+                
+                avT1: "Labor Rate", avP1: "The first hour of labor for other unlisted jobs is €40/hour.",
+                avT2: "Vehicle Pickup", avP2: "Bicycles must be picked up within 48 hours of notification. After that, a surcharge of €1 per additional working day will apply.",
+                avT3: "Taxes", avP3: "All prices listed in the rates do not include VAT.",
+                lblDir: "Address:", lblTel: "Phone / WhatsApp:", lblHor: "Opening Hours:",
+                txtHor: "Monday to Friday: 15:30 – 19:30 (Saturday and Sunday closed)", footer: "All rights reserved."
+            }
+        };
+
+        // LÓGICA DEL CARRUSEL
+        let indiceActual = 0;
+        const totalSlides = 3;
+        let intervaloCarrusel = setInterval(() => moverCarrusel(1), 5000);
+
+        function moverCarrusel(direccion) {
+            clearInterval(intervaloCarrusel);
+            indiceActual += direccion;
+            if (indiceActual >= totalSlides) {
+                indiceActual = 0;
+            } else if (indiceActual < 0) {
+                indiceActual = totalSlides - 1;
+            }
+            const desplazamiento = -indiceActual * (100 / totalSlides);
+            document.getElementById('carruselSlide').style.transform = `translateX(${desplazamiento}%)`;
+            intervaloCarrusel = setInterval(() => moverCarrusel(1), 5000);
+        }
+
+        // FUNCIÓN DE TRADUCCIÓN
+        function cambiarIdioma(lang) {
+            document.getElementById('btn-es').classList.remove('activo');
+            document.getElementById('btn-eu').classList.remove('activo');
+            document.getElementById('btn-en').classList.remove('activo');
+            document.getElementById(`btn-${lang}`).classList.add('activo');
+
+            const t = traducciones[lang];
+
+            document.getElementById('nav-inicio').textContent = t.inicio;
+            document.getElementById('nav-tarifas').textContent = t.tarifas;
+            document.getElementById('nav-contacto').textContent = t.contacto;
+            document.getElementById('txt-hero-titulo').textContent = t.heroT;
+            document.getElementById('txt-hero-p').textContent = t.heroP;
+            document.getElementById('txt-btn-cita').textContent = t.btnC;
+
+            document.getElementById('cr-p1').textContent = t.crP1;
+            document.getElementById('cr-p2').textContent = t.crP2;
+            document.getElementById('cr-p3').textContent = t.crP3;
+
+            document.getElementById('tit-revisiones').textContent = t.titRev;
+            document.getElementById('sub-revisiones').textContent = t.subRev;
+            document.getElementById('th-trabajos').textContent = t.thTrabajos;
+            document.getElementById('tit-otros').textContent = t.titOtros;
+            document.getElementById('sub-otros').textContent = t.subOtros;
+            document.getElementById('nav-contacto-tit').textContent = t.navContactoTit;
+
+            document.getElementById('cat-trans').textContent = t.catTrans;
+            document.getElementById('cat-fren').textContent = t.catFren;
+            document.getElementById('cat-rued').textContent = t.catRued;
+            document.getElementById('cat-cuad').textContent = t.catCuad;
+            document.getElementById('cat-pat').textContent = t.catPat;
+
+            for (let i = 1; i <= 8; i++) {
+                document.getElementById(`rev-${i}`).textContent = t[`rev${i}`];
+            }
+
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`t${i}`).textContent = t[`t${i}`];
+                document.getElementById(`f${i}`).textContent = t[`f${i}`];
+                document.getElementById(`r${i}`).textContent = t[`r${i}`];
+            }
+            document.getElementById('r11').textContent = t.r11;
+
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`c${i}`).textContent = t[`c${i}`];
+            }
+            document.getElementById('p1').textContent = t.p1;
+
+            document.getElementById('av-t1').textContent = t.avT1;
+            document.getElementById('av-p1').textContent = t.avP1;
+            document.getElementById('av-t2').textContent = t.avT2;
+            document.getElementById('av-p2').textContent = t.avP2;
+            document.getElementById('av-t3').textContent = t.avT3;
+            document.getElementById('av-p3').textContent = t.avP3;
+
+            document.getElementById('lbl-dir').textContent = t.lblDir;
+            document.getElementById('lbl-tel').textContent = t.lblTel;
+            document.getElementById('lbl-hor').textContent = t.lblHor;
+            document.getElementById('txt-hor').textContent = t.txtHor;
+            document.getElementById('txt-footer').textContent = t.footer;
+        }
+    </script>
+</body>
+</html>
